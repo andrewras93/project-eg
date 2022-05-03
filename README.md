@@ -2,7 +2,7 @@
 
 ```
 
-// Controllers.
+### Controllers.
 
 const database = require('../models/database.js');
 
@@ -22,7 +22,7 @@ module.exports = {
 
 }
 
-// Routes.
+### Routes.
 
 const controller = require('../controllers/controller');
 
