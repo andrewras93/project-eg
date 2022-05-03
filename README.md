@@ -3,6 +3,7 @@
 ```
 
 ### Controllers.
+```
 
 const database = require('../models/database.js');
 
@@ -27,8 +28,10 @@ module.exports = {
 const controller = require('../controllers/controller');
 
 router.get('/', async function (req, res) {
-    const data = await controller.methodName('query');
-    res.send(data);
+const data = await controller.methodName('query');
+res.send(data);
 });
+
+```
 
 ```
