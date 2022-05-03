@@ -2,8 +2,7 @@
 
 ```
 
-### Controllers.
-```
+// Controllers.
 
 const database = require('../models/database.js');
 
@@ -23,7 +22,7 @@ module.exports = {
 
 }
 
-### Routes.
+// Routes.
 
 const controller = require('../controllers/controller');
 
@@ -31,6 +30,8 @@ router.get('/', async function (req, res) {
 const data = await controller.methodName('query');
 res.send(data);
 });
+
+```
 
 ```
 
