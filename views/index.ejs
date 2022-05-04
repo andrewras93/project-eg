@@ -1,0 +1,39 @@
+<%- include('partials/head.ejs') %>
+
+<body>
+    <%- include('partials/header.ejs') %>
+
+    <div id="products" style="display: flex;">
+        <% products.forEach(product => { %>
+            <li style="list-style: none;">
+                <h3><%= product.name %></h3>
+                <p><%= product.description %></p>
+                <p><%= product.price %> ,- <%= product.enhed %></p>
+                <button id="<%= product.id %>" class="addToCart">Læg i kurv</button>
+            </li>
+        <% }); %>
+    </div>
+
+    <div id="popUp">
+        
+    </div>
+    <% 
+        
+    %>
+
+
+
+    <script>
+        const addToCartButton = document.getElementsByClassName('addToCart');
+
+        for(let i = 0; i < addToCartButton.length; i++) {
+            addToCartButton[i].addEventListener('click', () => {
+                
+                alert(`Clicked`);
+            });
+        }
+
+    </script>
+    <%- include('partials/scripts.ejs') %>
+</body>
+</html>
