@@ -2,38 +2,82 @@
 
 <body>
     <%- include('partials/header.ejs') %>
+    <div style="max-width: 992px; margin: 64px auto;">
 
-    <div id="products" style="display: flex;">
-        <% products.forEach(product => { %>
-            <li style="list-style: none;">
-                <h3><%= product.name %></h3>
-                <p><%= product.description %></p>
-                <p><%= product.price %> ,- <%= product.enhed %></p>
-                <button id="<%= product.id %>" class="addToCart">Læg i kurv</button>
-            </li>
-        <% }); %>
+        <!-- If a product is chosen, display that product and its connected products. -->
+        <% if (product) { %>
+
+        <div style="display: flex;">
+
+            <div style="flex-basis: 70%;">
+
+                <!-- Chosen product. -->
+                <div>
+                    <li style="list-style: none; display: inline-block; background-color: grey; margin: 8px; padding: 8px;">
+                        <h3><%= product.name %></h3>
+                        <p><%= product.description %></p>
+                        <p><%= product.price %> ,- <%= product.unit %></p>
+                    </li>
+                </div>
+
+                <!-- Products connected to chosen product. -->
+                <h3>Har du husket følgende til dette produkt?</h3>
+                <div style="display: flex; flex-direction: column;">
+                    <% products.forEach(product => { %>
+                            <li style="list-style: none; width: fit-content; background-color: grey; margin: 8px; padding: 8px;">
+                                <h3><%= product.name %></h3>
+                                <p><%= product.description %></p>
+                                <p><%= product.price %> ,- <%= product.unit %></p>
+                                <button><a style="text-decoration: none; color: black;"href="/produkt/<%= product.id %>">Læg I Kurv</a></button>
+                            </li>
+                    <% }); %>
+                </div>
+
+                <!-- Related products to chosen product. -->
+                <h3>Relevante produkter</h3>
+                <% products.forEach(product => { %>
+                        <li style="list-style: none; display: inline-block; background-color: grey; margin: 8px; padding: 8px;">
+                            <h3><%= product.name %></h3>
+                            <p><%= product.description %></p>
+                            <p><%= product.price %> ,- <%= product.unit %></p>
+                            <button><a style="text-decoration: none; color: black;"href="/produkt/<%= product.id %>">Læg I Kurv</a></button>
+                        </li>
+                <% }); %>
+
+            </div>
+
+            <!-- Cart. -->
+            <div style="flex-basis: 30%;">
+
+                <!-- Dummy data. -->
+                <h3>Indkøbskurv</h3>
+                <small>Din indkøbskurv er tom.</small><br>
+                <button>Betal</button>
+
+            </div>
+
+        </div>
+
+        <!-- If no products is chosen, display all products. -->
+        <% } else { %>
+
+        <div id="products" style="display: flex;">
+
+            <!-- All products -->
+            <% products.forEach(product => { %>
+                    <li style="list-style: none; display: inline-block; background-color: grey; margin: 8px; padding: 8px;">
+                        <h3><%= product.name %></h3>
+                        <p><%= product.description %></p>
+                        <p><%= product.price %> ,- <%= product.unit %></p>
+                        <button><a style="text-decoration: none; color: black;"href="/produkt/<%= product.id %>">Læg I Kurv</a></button>
+                    </li>
+            <% }); %>
+
+        </div>
+
+        <% } %>
+
     </div>
-
-    <div id="popUp">
-        
-    </div>
-    <% 
-        
-    %>
-
-
-
-    <script>
-        const addToCartButton = document.getElementsByClassName('addToCart');
-
-        for(let i = 0; i < addToCartButton.length; i++) {
-            addToCartButton[i].addEventListener('click', () => {
-                
-                alert(`Clicked`);
-            });
-        }
-
-    </script>
     <%- include('partials/scripts.ejs') %>
 </body>
 </html>
