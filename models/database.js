@@ -7,7 +7,7 @@ const connection = mysql.createConnection({
     database: 'test'
 });
 
-connection.connect((err)=>{
+connection.connect((err) => {
     if (err) {
         throw err;
     } else {

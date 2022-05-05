@@ -35,7 +35,7 @@
 
                 <!-- Related products to chosen product. -->
                 <h3>Relevante produkter</h3>
-                <% products.forEach(product => { %>
+                <% relatedProducts.forEach(product => { %>
                         <li style="list-style: none; display: inline-block; background-color: grey; margin: 8px; padding: 8px;">
                             <h3><%= product.name %></h3>
                             <p><%= product.description %></p>
@@ -49,9 +49,16 @@
             <!-- Cart. -->
             <div style="flex-basis: 30%;">
 
-                <!-- Dummy data. -->
                 <h3>Indkøbskurv</h3>
-                <small>Din indkøbskurv er tom.</small><br>
+                <% if (cart) { %>
+                    <% cart.forEach(product => { %>
+                        <li>
+                            <p><%= product.name %></p>
+                            <p><%= product.description %></p>
+                        </li>
+                    <% }) %>
+                <% } %>
+                <!-- <small>Din indkøbskurv er tom.</small><br> -->
                 <button>Betal</button>
 
             </div>
@@ -70,7 +77,6 @@
                         <h3><%= product.name %></h3>
                         <p><%= product.description %></p>
                         <p><%= product.price %> ,- <%= product.unit %></p>
-                        <input type="text">
                         <button><a style="text-decoration: none; color: black;" href="/produkt/<%= product.id %>">Læg I Kurv</a></button>
                     </li>
                 </form>
