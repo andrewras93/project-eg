@@ -28,7 +28,7 @@
                                 <h3><%= product.name %></h3>
                                 <p><%= product.description %></p>
                                 <p><%= product.price %> ,- <%= product.unit %></p>
-                                <button><a style="text-decoration: none; color: black;"href="/produkt/<%= product.id %>">Læg I Kurv</a></button>
+                                <button><a style="text-decoration: none; color: black;" href="/produkt/<%= product.id %>">Læg I Kurv</a></button>
                             </li>
                     <% }); %>
                 </div>
@@ -40,7 +40,7 @@
                             <h3><%= product.name %></h3>
                             <p><%= product.description %></p>
                             <p><%= product.price %> ,- <%= product.unit %></p>
-                            <button><a style="text-decoration: none; color: black;"href="/produkt/<%= product.id %>">Læg I Kurv</a></button>
+                            <button><a style="text-decoration: none; color: black;" href="/produkt/<%= product.id %>">Læg I Kurv</a></button>
                         </li>
                 <% }); %>
 
@@ -65,12 +65,15 @@
 
             <!-- All products -->
             <% products.forEach(product => { %>
+                <form action="">
                     <li style="list-style: none; display: inline-block; background-color: grey; margin: 8px; padding: 8px;">
                         <h3><%= product.name %></h3>
                         <p><%= product.description %></p>
                         <p><%= product.price %> ,- <%= product.unit %></p>
-                        <button><a style="text-decoration: none; color: black;"href="/produkt/<%= product.id %>">Læg I Kurv</a></button>
+                        <input type="text">
+                        <button><a style="text-decoration: none; color: black;" href="/produkt/<%= product.id %>">Læg I Kurv</a></button>
                     </li>
+                </form>
             <% }); %>
 
         </div>
