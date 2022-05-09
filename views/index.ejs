@@ -1,6 +1,6 @@
 <%- include('partials/head.ejs') %>
 
-<body>
+<body id="index">
     <%- include('partials/header.ejs') %>
     <div style="max-width: 992px; margin: 64px auto;">
 
@@ -72,14 +72,14 @@
 
             <!-- All products -->
             <% products.forEach(product => { %>
-                <form action="">
+                
                     <li style="list-style: none; display: inline-block; background-color: grey; margin: 8px; padding: 8px;">
                         <h3><%= product.name %></h3>
                         <p><%= product.description %></p>
                         <p><%= product.price %> ,- <%= product.unit %></p>
-                        <button><a style="text-decoration: none; color: black;" href="/produkt/<%= product.id %>">Læg I Kurv</a></button>
+                        <button class="addToCart" onclick="addToCart('<%= product.id %>', '<%= product.name %>')">Læg I Kurv</button>
                     </li>
-                </form>
+
             <% }); %>
 
         </div>
@@ -87,6 +87,60 @@
         <% } %>
 
     </div>
+
+    <!-- Move script to its own separate file later -->
+    <script defer>
+
+        /* Function to create pop-up window when clicking on 'add to cart' button */ 
+        function addToCart(productId, productName) {
+
+            const body = document.getElementById('index');
+            const container = document.createElement('div');
+            const addedItem = document.createElement('small');
+            const title = document.createElement('h2');
+            const accept = document.createElement('a');
+            const dismiss = document.createElement('a');
+
+            container.setAttribute('id', 'popUp');
+            addedItem.setAttribute('id', 'addedItem');
+            accept.setAttribute('href', 'produkt/' + productId);
+            dismiss.setAttribute('href', '/');
+
+            addedItem.innerHTML = `${productName} tilføjet til kurv`;
+            title.innerHTML = 'Vi har nogle forslag til relevante produkter. Vil du se dem nu?';
+            accept.innerHTML = 'Se produkter';
+            dismiss.innerHTML = 'Ikke nu';
+
+            container.append(addedItem, title, accept, dismiss);
+            body.appendChild(container);
+        
+        }
+
+    </script>
+
+    <!-- Styles for pop-up window, remove to separate file later -->
+    <style>
+        #popUp {
+            width: 992px;
+            height: 80vh;
+            background-color: rgba(169, 169, 169, 0.96);
+            padding: 32px;   
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 99;
+        }
+        #popUp a {
+            margin: 8px;
+        }
+        #addedItem {
+            display: block;
+            background-color: green;
+            padding: 8px;
+        }
+    </style>
+
     <%- include('partials/scripts.ejs') %>
 </body>
 </html>
