@@ -25,6 +25,12 @@ router.get('/', async function (req, res) {
     });
 });
 
+router.get('/alle-produkter', async function (req, res) {
+    const products = await queryController.handleQuery('SELECT * FROM products');
+
+    res.json(products);
+});
+
 // GET one product to show its needed and related products.
 router.get('/produkt/:id', async function (req, res) {
 

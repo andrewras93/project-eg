@@ -91,8 +91,15 @@
     <!-- Move script to its own separate file later -->
     <script defer>
 
+        /* Fetch all products from server */
+        async function fetchProducts() {
+            let response = await fetch('http://localhost:3000/alle-produkter');
+            let data = await response.json();
+            return data;
+        }
+
         /* Function to create pop-up window when clicking on 'add to cart' button */ 
-        function addToCart(productId, productName) {
+        async function addToCart(productId, productName) {
 
             const body = document.getElementById('index');
             const container = document.createElement('div');
@@ -100,6 +107,7 @@
             const title = document.createElement('h2');
             const accept = document.createElement('a');
             const dismiss = document.createElement('a');
+            const otherProducts = document.createElement('h2');
 
             container.setAttribute('id', 'popUp');
             addedItem.setAttribute('id', 'addedItem');
@@ -110,9 +118,28 @@
             title.innerHTML = 'Vi har nogle forslag til relevante produkter. Vil du se dem nu?';
             accept.innerHTML = 'Se produkter';
             dismiss.innerHTML = 'Ikke nu';
+            otherProducts.innerHTML = 'Andre købte også:';
 
-            container.append(addedItem, title, accept, dismiss);
+            container.append(addedItem, title, accept, dismiss, otherProducts);
             body.appendChild(container);
+
+            const allProducts = await fetchProducts();
+
+            allProducts.forEach(product => {
+                const li = document.createElement('li');
+                const productName = document.createElement('h3');
+                const productDescription = document.createElement('p');
+                const productPrice = document.createElement('p');
+
+                li.setAttribute('class', 'otherProduct');
+
+                productName.innerHTML = product.name;
+                productDescription.innerHTML = product.description;
+                productPrice.innerHTML = product.price + ' ,- ' + product.unit;
+
+                li.append(productName, productDescription, productPrice);
+                container.appendChild(li);                   
+            });
         
         }
 
@@ -122,7 +149,7 @@
     <style>
         #popUp {
             width: 992px;
-            height: 80vh;
+            min-height: 100vh;
             background-color: rgba(169, 169, 169, 0.96);
             padding: 32px;   
             position: absolute;
@@ -137,6 +164,13 @@
         #addedItem {
             display: block;
             background-color: green;
+            padding: 8px;
+        }
+        .otherProduct {
+            display: inline-block;
+            background-color: grey;
+            width: 30%;
+            margin: 8px;
             padding: 8px;
         }
     </style>
