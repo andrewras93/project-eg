@@ -2,7 +2,6 @@ const express = require("express");
 const session = require("express-session");
 const app = express();
 const index = require("./routes/index.js");
-// const login = require("./routes/login.js");
 const cookie = require("cookie");
 const cookieParser = require("cookie-parser");
 
