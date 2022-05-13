@@ -2,6 +2,7 @@
 <body id="index">
   <%- include('partials/header.ejs') %>
   <div style="max-width: 992px; margin: 64px auto">
+    <p><%= locals.errorMsg %></p>
     <form
       action="/loginCheck"
       method="POST"
