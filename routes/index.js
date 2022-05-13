@@ -45,7 +45,7 @@ router.get("/signup", async function (req, res) {
   });
 });
 
-router.post("/signup2", async function (req, res) {
+router.post("/signupCheck", async function (req, res) {
   try {
     const uname = req.body.username;
     const hashedPass = bcrypt.hashSync(req.body.password, 10);
@@ -59,7 +59,10 @@ router.post("/signup2", async function (req, res) {
       res.redirect("/login");
     }
   } catch {
-    res.redirect("/register");
+    res.render("signup", {
+      title: "Signup",
+      errorMsg: "Username already exists",
+    });
   }
   // console.log(users);
 });
@@ -79,13 +82,15 @@ router.post("/loginCheck", async function (req, res) {
       `SELECT password FROM users WHERE user="${uname}"`
     );
     const pw = hashedPass[0]["password"];
-    console.log(pw);
     const verified = bcrypt.compareSync(password, pw);
 
     if (verified) {
       res.redirect("/");
     } else {
-      res.send("u fucked up");
+      res.render("login", {
+        title: "Login",
+        errorMsg: "Forkert email eller kode",
+      });
     }
   }
 });
