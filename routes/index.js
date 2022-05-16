@@ -3,6 +3,7 @@ const router = express.Router(); // TODO: Research præcist hvad express.Router(
 const queryController = require("../controllers/queryController");
 const bcrypt = require("bcrypt");
 const { response } = require("express");
+const validator = require("validator");
 
 let cart;
 let users = [];
@@ -46,24 +47,49 @@ router.get("/signup", async function (req, res) {
 });
 
 router.post("/signupCheck", async function (req, res) {
-  try {
-    const userEmail = req.body.email;
-    const hashedPass = bcrypt.hashSync(req.body.password, 10);
+  const userEmail = req.body.email;
+  const password = bcrypt.hashSync(req.body.password, 10);
+  const userFirstname = req.body.firstname.toLowerCase();
+  const userLastname = req.body.lastname.toLowerCase();
 
-    // Insert users into db
+  if (
+    validator.isEmail(userEmail) &&
+    password &&
+    userFirstname &&
+    userLastname
+  ) {
     const user = await queryController.handleQuery(
-      `INSERT INTO users (email, password_hashed) VALUES ("${userEmail}","${hashedPass}")`
+      `INSERT INTO users (email, password_hashed, firstname, lastname) VALUES ("${userEmail}","${password}","${userFirstname}","${userLastname}")`
     );
 
     if (user) {
       res.redirect("/login");
+    } else {
+      res.render("signup", {
+        title: "Signup",
+        errorMsg: "Emailen er allerede registreret",
+      });
     }
-  } catch {
-    res.render("signup", {
-      title: "Signup",
-      errorMsg: "Emailen er allerede registreret",
-    });
   }
+
+  // try {
+  //   const userEmail = req.body.email;
+  //   const hashedPass = bcrypt.hashSync(req.body.password, 10);
+
+  //   // Insert users into db
+  //   const user = await queryController.handleQuery(
+  //     `INSERT INTO users (email, password_hashed) VALUES ("${userEmail}","${hashedPass}")`
+  //   );
+
+  //   if (user) {
+  //     res.redirect("/login");
+  //   }
+  // } catch {
+  //   res.render("signup", {
+  //     title: "Signup",
+  //     errorMsg: "Emailen er allerede registreret",
+  //   });
+  // }
   // console.log(users);
 });
 
@@ -77,7 +103,7 @@ router.post("/loginCheck", async function (req, res) {
   const userEmail = req.body.email;
   const password = req.body.password;
 
-  if (userEmail && password) {
+  if (validator.isEmail(userEmail) && password) {
     const hashedPass = await queryController.handleQuery(
       `SELECT password_hashed FROM users WHERE email="${userEmail}"`
     );
