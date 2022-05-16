@@ -17,7 +17,7 @@ router.get("/", async function (req, res) {
   }
 
   const products = await queryController.handleQuery(
-    "SELECT id, name, description, price, unit FROM products"
+    "SELECT id, title, description, price, unittype FROM products"
   );
 
   res.render("index", {
@@ -47,12 +47,12 @@ router.get("/signup", async function (req, res) {
 
 router.post("/signupCheck", async function (req, res) {
   try {
-    const uname = req.body.username;
+    const userEmail = req.body.email;
     const hashedPass = bcrypt.hashSync(req.body.password, 10);
 
     // Insert users into db
     const user = await queryController.handleQuery(
-      `INSERT INTO users (user, password) VALUES ("${uname}","${hashedPass}")`
+      `INSERT INTO users (email, password_hashed) VALUES ("${userEmail}","${hashedPass}")`
     );
 
     if (user) {
@@ -61,7 +61,7 @@ router.post("/signupCheck", async function (req, res) {
   } catch {
     res.render("signup", {
       title: "Signup",
-      errorMsg: "Username already exists",
+      errorMsg: "Emailen er allerede registreret",
     });
   }
   // console.log(users);
@@ -74,14 +74,14 @@ router.get("/login", async function (req, res) {
 });
 
 router.post("/loginCheck", async function (req, res) {
-  const uname = req.body.username;
+  const userEmail = req.body.email;
   const password = req.body.password;
 
-  if (uname && password) {
+  if (userEmail && password) {
     const hashedPass = await queryController.handleQuery(
-      `SELECT password FROM users WHERE user="${uname}"`
+      `SELECT password_hashed FROM users WHERE email="${userEmail}"`
     );
-    const pw = hashedPass[0]["password"];
+    const pw = hashedPass[0]["password_hashed"];
     const verified = bcrypt.compareSync(password, pw);
 
     if (verified) {
@@ -109,13 +109,13 @@ router.get("/produkt/:id", async function (req, res) {
   }
 
   const product = await queryController.handleQuery(
-    `SELECT id, name, description, price, unit FROM products WHERE id=${req.params.id}`
+    `SELECT id, title, description, price, unittype FROM products WHERE id=${req.params.id}`
   );
   let neededProducts = await queryController.handleQuery(
-    `SELECT id, name, description, price, unit FROM products WHERE id !=${req.params.id}`
+    `SELECT id, title, description, price, unittype FROM products WHERE id !=${req.params.id}`
   );
   const relatedProducts = await queryController.handleQuery(
-    `SELECT id, name, description, price, unit FROM products WHERE id !=${req.params.id}`
+    `SELECT id, title, description, price, unittype FROM products WHERE id !=${req.params.id}`
   );
 
   neededProducts = neededProducts.filter(
